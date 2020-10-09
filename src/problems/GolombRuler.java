@@ -22,7 +22,7 @@ public class GolombRuler extends AbstractProblem {
     	for (int i = 0; i<m; i++) {
     		vars[i]= model.intVar("marqueur_"+(i+1), 0, m*m);
     	}
-    	
+    	/*
     	for(int i = 0; i<m; i++ ) {
     		for(int j = 0; j<m; j++ ) {
     			for(int k = 0; k<m; k++ ) {
@@ -37,10 +37,20 @@ public class GolombRuler extends AbstractProblem {
     			}
     		}
     	}
+    	*/
+	    
+	for(int i = 0; i<m-1; i++ ) 
+    		for(int j = i+1; j<m; j++ ) 
+    			for(int k = 0; k<m-1 && i!=k; k++ ) 
+    				for(int l = k+1; l<m && j!=l; l++ ) 
+	    				model.scalar( new IntVar[] {vars[i], vars[j], vars[l], vars[k]}, 
+						     new int[]{-1, 1, -1, 1}, "!=", 0).post();
     	
-    	/*for (int i=0; i<m-1; i++) {
+    	
+    	for (int i=0; i<m-1; i++) 
     		model.arithm(vars[i], "<", vars[i+1]).post();
-    	}*/
+	    
+	    
     	model.arithm(vars[0], "=", 0).post();
     	
     }
